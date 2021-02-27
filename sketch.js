@@ -1,5 +1,6 @@
 //Create variables here
 let dog,dogImg, happyDogImg, database, foodS, foodStock;
+let feedTime;
 
 function preload()
 {
@@ -24,6 +25,11 @@ function setup() {
 
   foodObj = new Food();
   foodObj.getFoodStock();
+  
+  var feedTimeRef = database.ref('lastFed');
+  feedTimeRef.on("value",function(data){
+    feedTime = data.val();
+  });
 
   
 }
@@ -35,6 +41,20 @@ function draw() {
   //add styles here
   background(46, 139, 87);
   
+  if (feedTime !== undefined){
+    fill(255);
+    textSize(15);
+    if(feedTime>=12){
+      text("Last Feed: "+ feedTime%12 + " PM", width-150,80);
+    }
+    else if(feedTime===0){
+      text("Last Feed: 12 AM ", width-150,80);
+    }
+    else{
+      text("Last Feed: "+ feedTime + " AM", width-150,80);
+    }
+  }
+  
   drawSprites();
   
 
@@ -43,8 +63,10 @@ function draw() {
     
     foodS = foodS-1;
     foodObj.updateFoodStock(foodS);
-    feedtime:hour();
-
+    feedTime = hour();
+    database.ref('/').update({
+      lastFed: feedTime
+    });
   });
 
   addFoodButton.mousePressed(function(){
