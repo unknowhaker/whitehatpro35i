@@ -12,16 +12,16 @@ function preload()
 function setup() {
   createCanvas(500, 500);
   database = firebase.database();
-  dog = createSprite(250,300);
+  dog = createSprite(250,350);
   dog.addImage(dogImg);
   dog.scale = 0.35;
 
   
   feedButton = createButton("Feed the dog");
-  feedButton.position(width/2-50,80);
+  feedButton.position(width/2+200,80);
 
   addFoodButton = createButton("Add food to the stock");
-  addFoodButton.position(width/2+50,80);
+  addFoodButton.position(width/2+300,80);
 
   foodObj = new Food();
   foodObj.getFoodStock();
@@ -54,6 +54,9 @@ function draw() {
       text("Last Feed: "+ feedTime + " AM", width-150,80);
     }
   }
+  
+  
+  foodObj.display();
   
   drawSprites();
   
